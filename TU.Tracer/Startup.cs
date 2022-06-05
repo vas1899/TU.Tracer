@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TU.Tracer.Extentions;
 
 namespace TU.Tracer
 {
@@ -28,16 +29,10 @@ namespace TU.Tracer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TU.Tracer", Version = "v1" });
-            });
-
-            services.AddDbContext<DataContext>(opt => {
-                opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
-            });
             services.AddControllers();
+
+            services.AddApplicationServices(Configuration);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +45,7 @@ namespace TU.Tracer
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TU.Tracer v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
