@@ -13,6 +13,7 @@ namespace Persistence
         public DbSet<Workday> Workdays { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<WorkdayEmployee> WorkdayEmployees { get; set; }
+        public DbSet<Packet> Packets { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
