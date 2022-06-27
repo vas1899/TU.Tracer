@@ -10,11 +10,11 @@ namespace TU.Tracer.Extentions
     {
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config)
         {
-            services.AddIdentityCore<UserApp>(opt => {
+            services.AddIdentityCore<AppUser>(opt => {
                 opt.Password.RequireNonAlphanumeric = false;
             })
                 .AddEntityFrameworkStores<DataContext>()
-                .AddSignInManager<SignInManager<UserApp>>();
+                .AddSignInManager<SignInManager<AppUser>>();
             services.AddAuthentication();
             return services;
         }
