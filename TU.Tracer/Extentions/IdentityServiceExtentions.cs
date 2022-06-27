@@ -12,6 +12,10 @@ namespace TU.Tracer.Extentions
         {
             services.AddIdentityCore<AppUser>(opt => {
                 opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequireDigit = false;
+                opt.Password.RequiredUniqueChars = 0;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireLowercase = false;
             })
                 .AddEntityFrameworkStores<DataContext>()
                 .AddSignInManager<SignInManager<AppUser>>();
