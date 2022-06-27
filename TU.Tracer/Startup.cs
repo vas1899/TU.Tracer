@@ -37,6 +37,8 @@ namespace TU.Tracer
             });
 
             services.AddApplicationServices(Configuration);
+            services.AddIdentityServices(Configuration);
+
 
         }
 
