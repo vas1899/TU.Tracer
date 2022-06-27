@@ -8,6 +8,7 @@ namespace Application.Core
         public AutoMapperProfiles()
         {
             CreateMap<Workday, Workday>();
+            CreateMap<Packet, Packet>();
         }
     }
 }
