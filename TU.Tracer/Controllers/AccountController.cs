@@ -1,12 +1,15 @@
 ﻿using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using TU.Tracer.DTOs;
 using TU.Tracer.Services;
 
 namespace TU.Tracer.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -22,7 +25,7 @@ namespace TU.Tracer.Controllers
             _token = token;
         }
 
-        // POST: api/Account
+        // POST: api/Account/Login
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
@@ -43,5 +46,32 @@ namespace TU.Tracer.Controllers
 
         }
 
+        // POST: api/Account/Register
+        [HttpPost("register")]
+        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
+        {
+            var isEmailTaken = await _userManager.Users.AnyAsync(u => u.Email == registerDto.Email);
+            if (isEmailTaken) {
+                return BadRequest("Email Taken");
+            }
+            var isUserNameTaken = await _userManager.Users.AnyAsync(u => u.UserName == registerDto.UserName);
+            if (isUserNameTaken) {
+                return BadRequest("UserName Taken");
+            }
+
+            var user = new AppUser { DisplayName = registerDto.DisplayName, Email = registerDto.Email, UserName = registerDto.UserName };
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
+            if (result.Succeeded) {
+                return new UserDto {
+                    DisplayName = registerDto.DisplayName,
+                    UserName = registerDto.UserName,
+                    Image = null,
+                    Token = _token.CreateToken(user)
+                };
+            }
+
+            return BadRequest("Error while registering!!");
+
+        }
     }
 }
