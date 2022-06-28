@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TU.Tracer.Extentions;
+using TU.Tracer.Services;
 
 namespace TU.Tracer
 {
@@ -38,7 +39,7 @@ namespace TU.Tracer
 
             services.AddApplicationServices(Configuration);
             services.AddIdentityServices(Configuration);
-
+            services.AddScoped<TokenService>();
 
         }
 
