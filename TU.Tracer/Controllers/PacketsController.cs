@@ -1,5 +1,6 @@
 ﻿using Application.Packets;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
@@ -18,6 +19,7 @@ namespace TU.Tracer.Controllers
         }
 
         // GET: api/Packets
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> List(CancellationToken ct)
         {
