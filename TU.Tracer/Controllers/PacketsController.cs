@@ -19,7 +19,6 @@ namespace TU.Tracer.Controllers
         }
 
         // GET: api/Packets
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> List(CancellationToken ct)
         {

@@ -1,7 +1,9 @@
 using Application.Packets;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,9 +24,13 @@ namespace TU.Tracer
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers().AddFluentValidation(config => {
-                config.RegisterValidatorsFromAssemblyContaining<Create>();
-            });
+            services.AddControllers(opt => {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            })
+                .AddFluentValidation(config => {
+                    config.RegisterValidatorsFromAssemblyContaining<Create>();
+                });
 
             services.AddApplicationServices(Configuration);
             services.AddIdentityServices(Configuration);
@@ -33,8 +39,7 @@ namespace TU.Tracer
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
+            if (env.IsDevelopment()) {
                 //app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TU.Tracer v1"));
@@ -47,8 +52,7 @@ namespace TU.Tracer
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
+            app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
             });
         }
