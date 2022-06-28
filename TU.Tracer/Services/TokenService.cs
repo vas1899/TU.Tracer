@@ -18,7 +18,7 @@ namespace TU.Tracer.Services
                 new Claim(ClaimTypes.Email, user.Email)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("keykeykeykeykey"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("key key key key key"));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor {
