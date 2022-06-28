@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using TU.Tracer.DTOs;
 using TU.Tracer.Services;
@@ -35,12 +36,7 @@ namespace TU.Tracer.Controllers
             }
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
             if (result.Succeeded) {
-                return new UserDto {
-                    DisplayName = user.DisplayName,
-                    UserName = user.UserName,
-                    Token = _token.CreateToken(user),
-                    Image = null
-                };
+                return CreateUserObject(user);
             }
             return Unauthorized();
 
@@ -62,16 +58,29 @@ namespace TU.Tracer.Controllers
             var user = new AppUser { DisplayName = registerDto.DisplayName, Email = registerDto.Email, UserName = registerDto.UserName };
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (result.Succeeded) {
-                return new UserDto {
-                    DisplayName = registerDto.DisplayName,
-                    UserName = registerDto.UserName,
-                    Image = null,
-                    Token = _token.CreateToken(user)
-                };
+                return CreateUserObject(user);
             }
 
             return BadRequest("Error while registering!!");
 
+        }
+
+        // GET: api/Account
+        [HttpGet]
+        public async Task<ActionResult<UserDto>> GetCurrentUser()
+        {
+            var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            return CreateUserObject(user);
+        }
+
+        private ActionResult<UserDto> CreateUserObject(AppUser user)
+        {
+            return new UserDto {
+                DisplayName = user.DisplayName,
+                UserName = user.UserName,
+                Image = null,
+                Token = _token.CreateToken(user)
+            };
         }
     }
 }
