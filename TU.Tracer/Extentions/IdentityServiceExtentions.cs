@@ -18,6 +18,9 @@ namespace TU.Tracer.Extentions
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequireDigit = false;
                 opt.Password.RequiredUniqueChars = 0;
+                opt.Password.RequiredLength = 4;
+                opt.Password.RequireLowercase = true;
+                opt.Password.RequireUppercase = true;
             })
                 .AddEntityFrameworkStores<DataContext>()
                 .AddSignInManager<SignInManager<AppUser>>();

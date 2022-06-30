@@ -11,7 +11,7 @@ namespace TU.Tracer.DTOs
         [Required]
         public string UserName { get; set; }
         [Required]
-        [RegularExpression("(?=.*[a-z])(?=.*[A-Z]).{4,15}$", ErrorMessage ="Password must have upper and lower case character!")]
+        [RegularExpression("(?=.*[a-z])(?=.*[A-Z]).{4,15}$", ErrorMessage ="Password must have upper and lower case character and 4 to 15 characters long!")]
         public string Password { get; set; }
         [Required]
         public string DisplayName { get; set; }
