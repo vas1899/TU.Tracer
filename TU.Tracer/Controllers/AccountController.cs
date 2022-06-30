@@ -10,9 +10,9 @@ using TU.Tracer.Services;
 
 namespace TU.Tracer.Controllers
 {
-    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
@@ -48,11 +48,13 @@ namespace TU.Tracer.Controllers
         {
             var isEmailTaken = await _userManager.Users.AnyAsync(u => u.Email == registerDto.Email);
             if (isEmailTaken) {
-                return BadRequest("Email Taken");
+                ModelState.AddModelError("email", "Email is taken");
+                return ValidationProblem();
             }
             var isUserNameTaken = await _userManager.Users.AnyAsync(u => u.UserName == registerDto.UserName);
             if (isUserNameTaken) {
-                return BadRequest("UserName Taken");
+                ModelState.AddModelError("username", "UserNameis taken");
+                return ValidationProblem();
             }
 
             var user = new AppUser { DisplayName = registerDto.DisplayName, Email = registerDto.Email, UserName = registerDto.UserName };
