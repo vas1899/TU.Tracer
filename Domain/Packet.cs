@@ -10,6 +10,7 @@ namespace Domain
         public string Category { get; set; }
         public DateTime Date { get; set; }
         public string City { get; set; }
+        public bool IsDelivered { get; set; }
 
     }
 }

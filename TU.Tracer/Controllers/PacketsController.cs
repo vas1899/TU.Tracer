@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace TU.Tracer.Controllers
 {
+    [AllowAnonymous]
     public class PacketsController : BaseApiController
     {
         // GET: api/Packets/5
@@ -38,6 +39,13 @@ namespace TU.Tracer.Controllers
         public async Task<IActionResult> Change(Guid id, [FromBody] Packet Packet, CancellationToken ct)
         {
             return HandleResult(await Mediator.Send(new Change.Command { Packet = Packet, Id = id }, ct));
+        }
+        // PUT: api/Packets/markDelivered
+        [HttpPut]
+        [Route("markDelivered/{id}")]
+        public async Task<IActionResult> MarkDelivered(Guid id, CancellationToken ct)
+        {
+            return HandleResult(await Mediator.Send(new MarkDelivered.Command { Id = id }, ct));
         }
 
         // DELETE api/Packets/5
