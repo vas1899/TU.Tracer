@@ -26,9 +26,11 @@ namespace TU.Tracer.Extentions
             services.AddCors(opt => {
                 opt.AddPolicy("CorsPolicy", policy => {
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://192.168.100.4:19000");
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:19006/");
                 });
             });
-
+            
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
